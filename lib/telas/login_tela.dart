@@ -89,14 +89,6 @@ class _LoginTelaState extends State<LoginTela> {
     } else {
       alert(context, "Login Inválido!");
     }
-    // var user = await LoginApi.login(login, senha);
-    //
-    // if (user != null) {
-    //   //print('==> $user');
-    //   _navegaQuizStart(context);
-    // } else {
-    //   alert(context, "Login Inválido!");
-    // }
   }
 
   _navegaQuizStart(BuildContext context) {

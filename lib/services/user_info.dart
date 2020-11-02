@@ -4,10 +4,6 @@
 
 import 'dart:convert';
 
-UserInfo userInfoFromJson(String str) => UserInfo.fromJson(json.decode(str));
-
-String userInfoToJson(UserInfo data) => json.encode(data.toJson());
-
 class UserInfo {
   UserInfo({
     this.user,
@@ -17,15 +13,15 @@ class UserInfo {
   User user;
   String token;
 
-  // factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
-  //       user: User.fromJson(json["user"]),
-  //       token: json["token"],
-  //     );
+  factory UserInfo.fromRawJson(String str) =>
+      UserInfo.fromJson(json.decode(str));
 
-  UserInfo.fromJson(Map<String, dynamic> json) {
-    user = User.fromJson(json["user"]);
-    token = json["token"];
-  }
+  String toRawJson() => json.encode(toJson());
+
+  factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
+        user: User.fromJson(json["user"]),
+        token: json["token"],
+      );
 
   Map<String, dynamic> toJson() => {
         "user": user.toJson(),
@@ -61,10 +57,14 @@ class User {
   Company company;
   List<dynamic> tads;
   DateTime createDate;
-  AteUser createUser;
+  CreateUserCreateUser createUser;
   DateTime lastUpdateDate;
-  AteUser lastUpdateUser;
+  CreateUserCreateUser lastUpdateUser;
   bool isActive;
+
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -75,9 +75,9 @@ class User {
         company: Company.fromJson(json["company"]),
         tads: List<dynamic>.from(json["tads"].map((x) => x)),
         createDate: DateTime.parse(json["createDate"]),
-        createUser: AteUser.fromJson(json["createUser"]),
+        createUser: CreateUserCreateUser.fromJson(json["createUser"]),
         lastUpdateDate: DateTime.parse(json["lastUpdateDate"]),
-        lastUpdateUser: AteUser.fromJson(json["lastUpdateUser"]),
+        lastUpdateUser: CreateUserCreateUser.fromJson(json["lastUpdateUser"]),
         isActive: json["isActive"],
       );
 
@@ -141,10 +141,14 @@ class Company {
   List<dynamic> phones;
   dynamic branch;
   DateTime createDate;
-  AteUser createUser;
+  CompanyCreateUser createUser;
   DateTime lastUpdateDate;
-  AteUser lastUpdateUser;
+  CompanyCreateUser lastUpdateUser;
   bool isActive;
+
+  factory Company.fromRawJson(String str) => Company.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
         id: json["id"],
@@ -165,9 +169,9 @@ class Company {
         phones: List<dynamic>.from(json["phones"].map((x) => x)),
         branch: json["branch"],
         createDate: DateTime.parse(json["createDate"]),
-        createUser: AteUser.fromJson(json["createUser"]),
+        createUser: CompanyCreateUser.fromJson(json["createUser"]),
         lastUpdateDate: DateTime.parse(json["lastUpdateDate"]),
-        lastUpdateUser: AteUser.fromJson(json["lastUpdateUser"]),
+        lastUpdateUser: CompanyCreateUser.fromJson(json["lastUpdateUser"]),
         isActive: json["isActive"],
       );
 
@@ -197,8 +201,66 @@ class Company {
       };
 }
 
-class AteUser {
-  AteUser({
+class CompanyCreateUser {
+  CompanyCreateUser({
+    this.id,
+    this.fullName,
+    this.email,
+    this.profile,
+    this.tads,
+    this.createDate,
+    this.createUser,
+    this.lastUpdateDate,
+    this.lastUpdateUser,
+    this.isActive,
+  });
+
+  int id;
+  String fullName;
+  String email;
+  String profile;
+  List<dynamic> tads;
+  DateTime createDate;
+  CreateUserCreateUser createUser;
+  DateTime lastUpdateDate;
+  CreateUserCreateUser lastUpdateUser;
+  bool isActive;
+
+  factory CompanyCreateUser.fromRawJson(String str) =>
+      CompanyCreateUser.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory CompanyCreateUser.fromJson(Map<String, dynamic> json) =>
+      CompanyCreateUser(
+        id: json["id"],
+        fullName: json["fullName"],
+        email: json["email"],
+        profile: json["profile"],
+        tads: List<dynamic>.from(json["tads"].map((x) => x)),
+        createDate: DateTime.parse(json["createDate"]),
+        createUser: CreateUserCreateUser.fromJson(json["createUser"]),
+        lastUpdateDate: DateTime.parse(json["lastUpdateDate"]),
+        lastUpdateUser: CreateUserCreateUser.fromJson(json["lastUpdateUser"]),
+        isActive: json["isActive"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "fullName": fullName,
+        "email": email,
+        "profile": profile,
+        "tads": List<dynamic>.from(tads.map((x) => x)),
+        "createDate": createDate.toIso8601String(),
+        "createUser": createUser.toJson(),
+        "lastUpdateDate": lastUpdateDate.toIso8601String(),
+        "lastUpdateUser": lastUpdateUser.toJson(),
+        "isActive": isActive,
+      };
+}
+
+class CreateUserCreateUser {
+  CreateUserCreateUser({
     this.id,
     this.createDate,
     this.lastUpdateDate,
@@ -226,7 +288,13 @@ class AteUser {
   List<dynamic> tads;
   String email;
 
-  factory AteUser.fromJson(Map<String, dynamic> json) => AteUser(
+  factory CreateUserCreateUser.fromRawJson(String str) =>
+      CreateUserCreateUser.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory CreateUserCreateUser.fromJson(Map<String, dynamic> json) =>
+      CreateUserCreateUser(
         id: json["id"],
         createDate: DateTime.parse(json["createDate"]),
         lastUpdateDate: DateTime.parse(json["lastUpdateDate"]),
@@ -238,7 +306,7 @@ class AteUser {
         user: json["user"],
         company: json["company"] == null ? null : json["company"],
         tads: List<dynamic>.from(json["tads"].map((x) => x)),
-        email: json["email"] == null ? null : json["email"],
+        email: json["email"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -253,7 +321,7 @@ class AteUser {
         "user": user,
         "company": company == null ? null : company,
         "tads": List<dynamic>.from(tads.map((x) => x)),
-        "email": email == null ? null : email,
+        "email": email,
       };
 }
 
@@ -265,6 +333,10 @@ class Phone {
 
   String phone;
   String description;
+
+  factory Phone.fromRawJson(String str) => Phone.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Phone.fromJson(Map<String, dynamic> json) => Phone(
         phone: json["phone"],

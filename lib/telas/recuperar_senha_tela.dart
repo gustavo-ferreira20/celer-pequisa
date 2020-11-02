@@ -83,28 +83,26 @@ class _RecuperarSenhaTelaState extends State<RecuperarSenhaTela> {
     ).show();
   }
 
-  // void _clickedResetButton(BuildContext context) async {
-  //   bool formOk = _formKey.currentState.validate();
-  //
-  //   if (!formOk) {
-  //     return;
-  //   }
-  //
-  //   String email = _ctrlEmail.text;
-  //
-  //   print('login: $email');
-  //
-  //   var user = await PasswordReset.passwordReset(email);
-  //
-  //   if (user != null) {
-  //     print('==> $user');
-  //     popup.popUp(context, LoginTela.id, "Concluido!",
-  //         "Verifique seu email para recuperar a sua senha.");
-  //   } else {
-  //     popup.popUp(context, RecuperarSenhaTela.id, "Erro!!",
-  //         "Por favor, digite um email válido");
-  //   }
-  // }
+  void _clickedResetButton(BuildContext context) async {
+    bool formOk = _formKey.currentState.validate();
+
+    if (!formOk) {
+      return;
+    }
+
+    String email = _ctrlEmail.text;
+
+    print('login: $email');
+
+    var user = await PasswordReset.passwordReset(email);
+    if (user != null) {
+      popup.popUp(context, LoginTela.id, "Concluido!",
+          "Verifique seu email para recuperar a sua senha.");
+    } else {
+      popup.popUp(context, RecuperarSenhaTela.id, "Erro!!",
+          "Por favor, digite um email válido");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +172,7 @@ class _RecuperarSenhaTelaState extends State<RecuperarSenhaTela> {
                         //emailValue --> contain the email typed in the textfield
                         //Implement recovering password functionality
                         setState(() {
-                          //_clickedResetButton(context);
+                          _clickedResetButton(context);
                           // if (emailValue == null) {
                           //   popup.popUp(context, RecuperarSenhaTela.id, "Erro!!",
                           //       "Por favor, digite um email válido");
