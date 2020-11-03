@@ -1,4 +1,4 @@
-import 'package:celer_pesquisa_app/telas/identificacao_part1.dart';
+import 'package:celer_pesquisa_app/telas/questionario.dart';
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
@@ -73,7 +73,7 @@ class _IniciarQuizState extends State<IniciarQuiz> {
             buttonTitle: 'INICIAR QUIZ',
             onTap: () {
               // Create a empty array with the questions Struct to store the full quiz
-              Navigator.pushNamed(context, IdentificacaoQuiz.id);
+              Navigator.pushNamed(context, questionarioQuiz.id);
             },
           )
         ],
