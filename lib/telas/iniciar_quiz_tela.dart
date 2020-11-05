@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/utilidades/card_reutilizavel.dart';
+import 'package:celer_pesquisa_app/telas/loading_tela.dart';
 
 class IniciarQuiz extends StatefulWidget {
   static const String id = 'iniciar_quiz';
@@ -73,7 +74,8 @@ class _IniciarQuizState extends State<IniciarQuiz> {
             buttonTitle: 'INICIAR QUIZ',
             onTap: () {
               // Create a empty array with the questions Struct to store the full quiz
-              Navigator.pushNamed(context, questionarioQuiz.id);
+
+              Navigator.pushNamed(context, LoadingScreen.id);
             },
           )
         ],

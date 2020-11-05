@@ -1,3 +1,4 @@
+import 'package:celer_pesquisa_app/telas/loading_tela.dart';
 import 'package:celer_pesquisa_app/telas/questionario.dart';
 import 'package:celer_pesquisa_app/telas/iniciar_quiz_tela.dart';
 import 'package:celer_pesquisa_app/telas/perguntas_tela.dart';
@@ -22,7 +23,8 @@ class CelerApp extends StatelessWidget {
         LoginTela.id: (context) => LoginTela(),
         RecuperarSenhaTela.id: (context) => RecuperarSenhaTela(),
         IniciarQuiz.id: (context) => IniciarQuiz(),
-        questionarioQuiz.id: (context) => questionarioQuiz(),
+        LoadingScreen.id: (context) => LoadingScreen(),
+        QuestionarioQuiz.id: (context) => QuestionarioQuiz(),
         //PerguntasTela.id: (context) => PerguntasTela(),
       },
     );

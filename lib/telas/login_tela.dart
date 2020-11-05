@@ -145,7 +145,9 @@ class _LoginTelaState extends State<LoginTela> {
                       elevation: 5.0,
                       child: MaterialButton(
                         onPressed: () {
-                          _clickButton(context);
+                          Navigator.pushNamed(context, IniciarQuiz.id);
+                          //Login function bellow, only have to comment out
+                          //_clickButton(context);
                         },
                         minWidth: 200.0,
                         height: 42.0,
