@@ -20,9 +20,11 @@ class NetworkHelper {
         await http.get('https://api.trovi.com.br/v1/questions/');
 
     if (response.statusCode == 200) {
-      String data = response.body;
+      //String data = response.body;
+      var data = response.bodyBytes;
 
-      return jsonDecode(data);
+      //return jsonDecode(data);
+      return jsonDecode(utf8.decode(data));
     } else {
       print(response.statusCode);
     }
