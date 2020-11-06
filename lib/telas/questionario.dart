@@ -1,13 +1,9 @@
-import 'dart:convert';
-
+import 'package:celer_pesquisa_app/telas/iniciar_quiz_tela.dart';
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/funcionalidades/question_model.dart';
-
-import 'package:celer_pesquisa_app/funcionalidades/questaoCerebro.dart';
-
-// QuestaoCerebro questaoCerebro = QuestaoCerebro();
+import 'package:celer_pesquisa_app/utilidades/alert.dart';
 
 class QuestionarioQuiz extends StatefulWidget {
   static const String id = 'identificacao_quiz';
@@ -22,7 +18,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   // Armazenar o quiz completo dentro dessa lista
   List variosQuizDoUser = [];
   // Um quiz individual será armazenado aqui
-  List IndividualQuiz = [];
+  Map<String, String> individualQuiz = {};
   var userChoice;
   var questionText;
   List<dynamic> choicesText;
@@ -33,8 +29,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     super.initState();
     //print(widget.questionsData);
     updateUI(widget.questionsData);
-    //print(questionBankLength());
-    //print(getChoicesList());
+    print(fieldType());
   }
 
   void updateUI(dynamic questionDataApi) {
@@ -58,6 +53,36 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     }
   }
 
+  bool isFinished() {
+    if (questionNumber >= questionBankLength() - 1) {
+      print('Now returning true');
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void checkEndOdQuiz() {
+    setState(() {
+      if (isFinished() == true) {
+        alert(
+            context, IniciarQuiz.id, 'O resultado está salvo em seu celular.');
+        print(individualQuiz); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
+      } else {
+        nextQuestion();
+      }
+    });
+  }
+
+  List<String> fieldType() {
+    final allTypes = List<String>();
+    for (Map map in widget.questionsData) {
+      QuestionModel c = QuestionModel.fromJson(map);
+      allTypes.add(c.fieldType);
+    }
+    return allTypes;
+  }
+
 // Print todos os field placeHolder
   // List<String> listFieldPlaceholder() {
   //   final allChoices = List<String>();
@@ -69,7 +94,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   // }
 
   List<dynamic> getChoices() {
-    var choices = [];
+    var choices = []; //
     for (int i = 0; i < choicesText.length; i++) {
       var eachChoice = choicesText[i]['name'];
 
@@ -134,8 +159,6 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
               child: Center(
                 child: Text(
                   questionText,
-                  //TODO: STATE BEFORE CHANGES BELOW - ONLY COMMENT OUT TO BACK TO NORMAL
-                  //questaoCerebro.getQuestionText(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 25.0,
@@ -145,18 +168,14 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
               ),
             ),
           ),
-          //...displayChoices(),
           ...getChoices(),
           ButtonBaixo(
             buttonTitle: 'PRÓXIMA',
             onTap: () {
-              // Create a empty array with the questions Struct to store the full quiz
-              //Navigator.pushNamed(context, PerguntasTela.id);
+              individualQuiz[questionText] = userChoice;
               print(userChoice);
-              setState(() {
-                nextQuestion();
-                //print(questaoCerebro.getAnswer().length);
-              });
+              print(questionText);
+              checkEndOdQuiz();
             },
           )
         ],
@@ -164,3 +183,30 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     );
   }
 }
+
+/* TextFormField for input
+
+
+ TextFormField(
+          style: kTextCorEscuro,
+          decoration: InputDecoration(
+              labelText: 'teste',
+              labelStyle: TextStyle(
+                color: kButtonCor2,
+              ),
+              hintText: 'teste',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kButtonCor1, width: 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kButtonCor1, width: 2.0),
+                borderRadius: BorderRadius.all(Radius.circular(32.0)),
+              )),
+        );
+ */

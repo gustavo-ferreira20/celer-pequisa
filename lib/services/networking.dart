@@ -1,8 +1,21 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkHelper {
   Future getData() async {
+    // var prefs = await SharedPreferences.getInstance();
+    // String token = (prefs.getString("tokemjwt") ?? '');
+    //
+    // print('token: $token');
+    //
+    // var header = {
+    //   "Content-Type": "application/json",
+    //   "Authorization": "Bearer $token",
+    // };
+
+    // http.Response response = await http
+    //     .get('https://api.trovi.com.br/v1/questions/', headers: header);
     http.Response response =
         await http.get('https://api.trovi.com.br/v1/questions/');
 

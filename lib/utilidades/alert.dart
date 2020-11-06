@@ -1,7 +1,7 @@
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:flutter/material.dart';
 
-alert(BuildContext context, String msg) {
+alert(BuildContext context, String routeName, String msg) {
   showDialog(
       context: context,
       builder: (context) {
@@ -17,7 +17,7 @@ alert(BuildContext context, String msg) {
           actions: [
             FlatButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.popAndPushNamed(context, routeName);
               },
               child: Text(
                 "Ok",
