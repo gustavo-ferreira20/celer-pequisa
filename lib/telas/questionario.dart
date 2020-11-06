@@ -23,6 +23,8 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   var questionText;
   List<dynamic> choicesText;
   int questionNumber = 0;
+  String image;
+  String buttonText;
 
   @override
   void initState() {
@@ -35,6 +37,8 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   void updateUI(dynamic questionDataApi) {
     questionText = questionDataApi[questionNumber]['name'];
     choicesText = widget.questionsData[questionNumber]['choices'];
+    image = questionDataApi[questionNumber]['image'];
+    checkLastQuestion();
   }
 
   int questionBankLength() {
@@ -53,6 +57,22 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     }
   }
 
+  bool isLastQuestion() {
+    if (questionNumber == questionBankLength() - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void checkLastQuestion() {
+    if (isLastQuestion() == true) {
+      buttonText = 'TERMINAR';
+    } else {
+      buttonText = 'PRÓXIMA';
+    }
+  }
+
   bool isFinished() {
     if (questionNumber >= questionBankLength() - 1) {
       print('Now returning true');
@@ -65,8 +85,8 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   void checkEndOdQuiz() {
     setState(() {
       if (isFinished() == true) {
-        alert(
-            context, IniciarQuiz.id, 'O resultado está salvo em seu celular.');
+        alert(context, IniciarQuiz.id, 'O resultado está salvo em seu celular.',
+            'Você terminou!');
         print(individualQuiz); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
       } else {
         nextQuestion();
@@ -168,9 +188,20 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
               ),
             ),
           ),
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Center(
+                child: Image(
+                  image: NetworkImage(image),
+                ),
+              ),
+            ),
+          ),
           ...getChoices(),
           ButtonBaixo(
-            buttonTitle: 'PRÓXIMA',
+            buttonTitle: buttonText,
             onTap: () {
               individualQuiz[questionText] = userChoice;
               print(userChoice);

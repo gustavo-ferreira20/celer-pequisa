@@ -87,7 +87,7 @@ class _LoginTelaState extends State<LoginTela> {
     if (userInfo != null) {
       _navegaQuizStart(context);
     } else {
-      alert(context, LoginTela.id, "Login Inválido!");
+      alert(context, LoginTela.id, "Login Inválido!", 'Tente Novamente');
     }
   }
 
@@ -145,8 +145,11 @@ class _LoginTelaState extends State<LoginTela> {
                       elevation: 5.0,
                       child: MaterialButton(
                         onPressed: () {
-                          _clickButton(context);
-                          //Navigator.pushNamed(context, IniciarQuiz.id);// for testing when not using auth
+                          //_clickButton(context);
+                          Navigator.pushNamed(
+                              context,
+                              IniciarQuiz
+                                  .id); // for testing when not using auth
                           //Login function bellow, only have to comment out
                         },
                         minWidth: 200.0,
