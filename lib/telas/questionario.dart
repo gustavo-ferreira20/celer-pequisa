@@ -1,9 +1,16 @@
+import 'package:celer_pesquisa_app/funcionalidades/db_helper.dart';
 import 'package:celer_pesquisa_app/telas/iniciar_quiz_tela.dart';
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/funcionalidades/question_model.dart';
 import 'package:celer_pesquisa_app/utilidades/alert.dart';
+//--
+import 'package:sqflite/sqflite.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:celer_pesquisa_app/funcionalidades/quiz_local_db_model.dart';
 
 class QuestionarioQuiz extends StatefulWidget {
   static const String id = 'identificacao_quiz';
@@ -18,13 +25,15 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   // Armazenar o quiz completo dentro dessa lista
   List variosQuizDoUser = [];
   // Um quiz individual será armazenado aqui
-  Map<String, String> individualQuiz = {};
+  List<String> individualQuiz = [];
   var userChoice;
   var questionText;
   List<dynamic> choicesText;
   int questionNumber = 0;
   String image;
   String buttonText;
+  String stringQuizList;
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -82,12 +91,21 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     }
   }
 
+  void stringList() {
+    stringQuizList = individualQuiz.join('||');
+  }
+
   void checkEndOdQuiz() {
     setState(() {
       if (isFinished() == true) {
+        //Stringify List of quiz to save in Sqflite
+        stringList();
+        _saveQuiz();
+        numberOfQuiz();
         alert(context, IniciarQuiz.id, 'O resultado está salvo em seu celular.',
             'Você terminou!');
-        print(individualQuiz); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
+        print(stringQuizList); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
+        //print(databaseHelper.getCount());
       } else {
         nextQuestion();
       }
@@ -140,6 +158,24 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
       choices.add(newChoice);
     }
     return choices;
+  }
+
+  void _saveQuiz() async {
+    int result;
+    result = await databaseHelper.insertQuiz(QuizDBModel(stringQuizList));
+
+    if (result != 0) {
+      //Success
+      print('Quiz saved!');
+    } else {
+      //Failure
+      print('Error, quiz hasnt been saved!');
+    }
+  }
+
+  void numberOfQuiz() async {
+    int result = await databaseHelper.getCount();
+    print('Number of quiz saved: $result');
   }
 
   @override
@@ -203,7 +239,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
           ButtonBaixo(
             buttonTitle: buttonText,
             onTap: () {
-              individualQuiz[questionText] = userChoice;
+              individualQuiz.add('$questionText $userChoice');
               print(userChoice);
               print(questionText);
               checkEndOdQuiz();
