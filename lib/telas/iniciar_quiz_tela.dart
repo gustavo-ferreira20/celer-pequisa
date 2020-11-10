@@ -1,5 +1,4 @@
 import 'package:celer_pesquisa_app/funcionalidades/db_helper.dart';
-import 'package:celer_pesquisa_app/telas/questionario.dart';
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
@@ -63,7 +62,7 @@ class _IniciarQuizState extends State<IniciarQuiz> {
                 CardReutilizavel(
                   colour: kCor5,
                   msg:
-                      "Você tem $result questionários para sincronizar com a nuvem!",
+                      "Número de questionários para sincronizar com a nuvem: $result",
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),

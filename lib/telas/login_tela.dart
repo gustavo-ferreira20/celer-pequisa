@@ -13,8 +13,8 @@ class LoginTela extends StatefulWidget {
 }
 
 class _LoginTelaState extends State<LoginTela> {
-  String email;
-  String password;
+  // String email;
+  // String password;
   final _ctrlLogin = TextEditingController();
   final _ctrlSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();

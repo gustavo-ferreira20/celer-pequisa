@@ -5,11 +5,6 @@ import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/utilidades/buttonBaixo.dart';
 import 'package:celer_pesquisa_app/funcionalidades/question_model.dart';
 import 'package:celer_pesquisa_app/utilidades/alert.dart';
-//--
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:celer_pesquisa_app/funcionalidades/quiz_local_db_model.dart';
 
 class QuestionarioQuiz extends StatefulWidget {
@@ -22,25 +17,26 @@ class QuestionarioQuiz extends StatefulWidget {
 }
 
 class _QuestionarioQuizState extends State<QuestionarioQuiz> {
-  // Armazenar o quiz completo dentro dessa lista
-  List variosQuizDoUser = [];
   // Um quiz individual será armazenado aqui
   List<String> individualQuiz = [];
   var userChoice;
+  var userInputAnswer;
   var questionText;
   List<dynamic> choicesText;
   int questionNumber = 0;
   String image;
   String buttonText;
   String stringQuizList;
+  final myController = TextEditingController();
   DatabaseHelper databaseHelper = DatabaseHelper();
+  Color teste = Colors.red;
 
   @override
   void initState() {
     super.initState();
     //print(widget.questionsData);
     updateUI(widget.questionsData);
-    print(fieldType());
+    //print(fieldType());
   }
 
   void updateUI(dynamic questionDataApi) {
@@ -76,7 +72,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
 
   void checkLastQuestion() {
     if (isLastQuestion() == true) {
-      buttonText = 'TERMINAR';
+      buttonText = 'TERMINAR E SALVAR';
     } else {
       buttonText = 'PRÓXIMA';
     }
@@ -112,14 +108,14 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     });
   }
 
-  List<String> fieldType() {
-    final allTypes = List<String>();
-    for (Map map in widget.questionsData) {
-      QuestionModel c = QuestionModel.fromJson(map);
-      allTypes.add(c.fieldType);
-    }
-    return allTypes;
-  }
+  // List<String> fieldType() {
+  //   final allTypes = List<String>();
+  //   for (Map map in widget.questionsData) {
+  //     QuestionModel c = QuestionModel.fromJson(map);
+  //     allTypes.add(c.fieldType);
+  //   }
+  //   return allTypes;
+  // }
 
 // Print todos os field placeHolder
   // List<String> listFieldPlaceholder() {
@@ -140,7 +136,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: FlatButton(
-            color: Colors.red,
+            color: teste,
             child: Text(
               eachChoice,
               style: TextStyle(
@@ -158,6 +154,72 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
       choices.add(newChoice);
     }
     return choices;
+  }
+
+  buttonColor() {}
+
+  // List<dynamic> getChoices() {
+  //   var choices = []; //
+  //   for (int i = 0; i < choicesText.length; i++) {
+  //     var eachChoice = choicesText[i]['name'];
+  //
+  //     var newChoice = Expanded(
+  //       child: Padding(
+  //         padding: EdgeInsets.all(15.0),
+  //         child: FlatButton(
+  //           color: Colors.red,
+  //           child: Text(
+  //             eachChoice,
+  //             style: TextStyle(
+  //               fontSize: 20.0,
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //           onPressed: () {
+  //             //The user picked this button.
+  //             userChoice = eachChoice;
+  //           },
+  //         ),
+  //       ),
+  //     );
+  //     choices.add(newChoice);
+  //   }
+  //   return choices;
+  // }
+
+  Expanded textField() {
+    return Expanded(
+      flex: 2,
+      child: Padding(
+        padding: EdgeInsets.all(15.0),
+        child: TextField(
+          controller: myController,
+          style: kTextCorEscuro,
+          decoration: InputDecoration(
+              labelText: 'Sua resposta aqui...',
+              labelStyle: TextStyle(
+                color: kButtonCor2,
+              ),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kButtonCor1, width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kButtonCor1, width: 2.0),
+              )),
+        ),
+      ),
+    );
+  }
+
+  bool displayField() {
+    if (widget.questionsData[questionNumber]['fieldType'] == 'choice') {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   void _saveQuiz() async {
@@ -235,12 +297,23 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
               ),
             ),
           ),
+          Visibility(
+            visible: displayField(),
+            child: textField(),
+          ),
           ...getChoices(),
           ButtonBaixo(
             buttonTitle: buttonText,
             onTap: () {
-              individualQuiz.add('$questionText $userChoice');
-              print(userChoice);
+              userInputAnswer = myController.text;
+              if (userChoice == null) {
+                individualQuiz.add('$questionText $userInputAnswer');
+                print(userInputAnswer);
+              } else {
+                individualQuiz.add('$questionText $userChoice');
+                print(userChoice);
+              }
+              myController.clear();
               print(questionText);
               checkEndOdQuiz();
             },
@@ -250,30 +323,3 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     );
   }
 }
-
-/* TextFormField for input
-
-
- TextFormField(
-          style: kTextCorEscuro,
-          decoration: InputDecoration(
-              labelText: 'teste',
-              labelStyle: TextStyle(
-                color: kButtonCor2,
-              ),
-              hintText: 'teste',
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: kButtonCor1, width: 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: kButtonCor1, width: 2.0),
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-              )),
-        );
- */
