@@ -333,6 +333,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
                 print(userChoice);
               }
               myController.clear();
+              _selectedIndex = -1;
               print(questionText);
               checkEndOdQuiz();
             },
