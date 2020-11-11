@@ -30,6 +30,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   final myController = TextEditingController();
   DatabaseHelper databaseHelper = DatabaseHelper();
   Color teste = Colors.red;
+  int _selectedIndex;
 
   @override
   void initState() {
@@ -127,39 +128,49 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   //   return allChoices;
   // }
 
-  List<dynamic> getChoices() {
+  List<dynamic> choicesList() {
     var choices = []; //
     for (int i = 0; i < choicesText.length; i++) {
       var eachChoice = choicesText[i]['name'];
-
-      var newChoice = Expanded(
-        child: Padding(
-          padding: EdgeInsets.all(15.0),
-          child: FlatButton(
-            color: teste,
-            child: Text(
-              eachChoice,
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              //The user picked this button.
-              userChoice = eachChoice;
-            },
-          ),
-        ),
-      );
-      choices.add(newChoice);
+      choices.add(eachChoice);
     }
     return choices;
   }
 
-  buttonColor() {}
+  getChoices() {
+    var listChoices = choicesList();
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: listChoices.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          tileColor: Colors.red,
+          title: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(
+                listChoices[index],
+                style: kTextOptions,
+              ),
+            ),
+          ),
+          selected: index == _selectedIndex,
+          selectedTileColor: Colors.red[200],
+          onTap: () {
+            setState(() {
+              _selectedIndex = index;
+              userChoice = listChoices[index];
+            });
+          },
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
+  }
 
   // List<dynamic> getChoices() {
-  //   var choices = []; //
+  //   var choices = [];
   //   for (int i = 0; i < choicesText.length; i++) {
   //     var eachChoice = choicesText[i]['name'];
   //
@@ -167,7 +178,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   //       child: Padding(
   //         padding: EdgeInsets.all(15.0),
   //         child: FlatButton(
-  //           color: Colors.red,
+  //           color: teste,
   //           child: Text(
   //             eachChoice,
   //             style: TextStyle(
@@ -176,6 +187,14 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   //             ),
   //           ),
   //           onPressed: () {
+  //             setState(() {
+  //               if (choices.indexOf(choices[i]) ==
+  //                   choicesText.indexOf(eachChoice)) {
+  //                 teste = Colors.yellow;
+  //               } else {
+  //                 teste = Colors.red;
+  //               }
+  //             });
   //             //The user picked this button.
   //             userChoice = eachChoice;
   //           },
@@ -301,7 +320,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
             visible: displayField(),
             child: textField(),
           ),
-          ...getChoices(),
+          getChoices(),
           ButtonBaixo(
             buttonTitle: buttonText,
             onTap: () {

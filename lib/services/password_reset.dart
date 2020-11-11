@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:celer_pesquisa_app/services/user_info.dart';
 
 class PasswordReset {
   static Future<bool> passwordReset(String email) async {

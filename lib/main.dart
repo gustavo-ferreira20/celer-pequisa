@@ -1,7 +1,6 @@
 import 'package:celer_pesquisa_app/telas/loading_tela.dart';
 import 'package:celer_pesquisa_app/telas/questionario.dart';
 import 'package:celer_pesquisa_app/telas/iniciar_quiz_tela.dart';
-import 'package:celer_pesquisa_app/telas/perguntas_tela.dart';
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/telas/bemvindo_tela.dart';
 import 'package:celer_pesquisa_app/telas/login_tela.dart';

@@ -24,3 +24,8 @@ const kTextCorEscuro2 = TextStyle(
   fontSize: 21.0,
   fontWeight: FontWeight.bold,
 );
+
+const kTextOptions = TextStyle(
+  color: Colors.black,
+  fontSize: 18.0,
+);

@@ -72,6 +72,7 @@ class DatabaseHelper {
     var db = await this.database;
     var result =
         await db.rawDelete('DELETE FROM $quizTable WHERE $colId = $id');
+    return result;
   }
 
   // Number of quiz obj in the DB

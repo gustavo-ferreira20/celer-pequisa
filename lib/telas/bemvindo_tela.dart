@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/telas/login_tela.dart';
-import 'package:celer_pesquisa_app/telas/recuperar_senha_tela.dart';
 
 class BemVindoTela extends StatelessWidget {
   static const String id = 'bemvindo_tela';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:celer_pesquisa_app/services/networking.dart';
 import 'package:celer_pesquisa_app/telas/questionario.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
