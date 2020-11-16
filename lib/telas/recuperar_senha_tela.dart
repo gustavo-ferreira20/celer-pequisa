@@ -112,7 +112,7 @@ class _RecuperarSenhaTelaState extends State<RecuperarSenhaTela> {
         elevation: 0,
         leading: FlatButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popAndPushNamed(context, LoginTela.id);
           },
           child: Icon(
             Icons.arrow_back_ios,

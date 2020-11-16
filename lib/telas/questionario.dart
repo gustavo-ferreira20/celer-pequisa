@@ -31,6 +31,7 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   Color teste = Colors.red;
   int _selectedIndex;
+  bool _validate = false;
 
   @override
   void initState() {
@@ -54,6 +55,35 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
       questionsLength.add(q);
     }
     return questionsLength.length;
+  }
+
+  void checkingEachQuestion() {
+    setState(() {
+      userInputAnswer = myController.text;
+      if (userChoice == null) {
+        if (myController.text.isEmpty) {
+          _validate = true;
+        } else {
+          _validate = false;
+          individualQuiz.add('$questionText $userInputAnswer');
+          print(userInputAnswer);
+          myController.clear();
+          FocusScope.of(context).unfocus();
+          checkEndOdQuiz();
+        }
+      } else {
+        if (userChoice == '') {
+          _validate = true;
+        } else {
+          _validate = false;
+          individualQuiz.add('$questionText $userChoice');
+          print(userChoice);
+          userChoice = null;
+          _selectedIndex = -1;
+          checkEndOdQuiz();
+        }
+      }
+    });
   }
 
   void nextQuestion() {
@@ -93,20 +123,18 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
   }
 
   void checkEndOdQuiz() {
-    setState(() {
-      if (isFinished() == true) {
-        //Stringify List of quiz to save in Sqflite
-        stringList();
-        _saveQuiz();
-        numberOfQuiz();
-        alert(context, IniciarQuiz.id, 'O resultado está salvo em seu celular.',
-            'Você terminou!');
-        print(stringQuizList); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
-        //print(databaseHelper.getCount());
-      } else {
-        nextQuestion();
-      }
-    });
+    if (isFinished() == true) {
+      //Stringify List of quiz to save in Sqflite
+      stringList();
+      _saveQuiz();
+      numberOfQuiz();
+      alert(context, IniciarQuiz.id, 'O resultado está salvo em seu celular.',
+          'Você terminou!');
+      print(stringQuizList); // I HAVE TO SEND THIS FILE TO THE LOCAL MEMORY
+      //print(databaseHelper.getCount());
+    } else {
+      nextQuestion();
+    }
   }
 
   // List<String> fieldType() {
@@ -169,43 +197,6 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
     );
   }
 
-  // List<dynamic> getChoices() {
-  //   var choices = [];
-  //   for (int i = 0; i < choicesText.length; i++) {
-  //     var eachChoice = choicesText[i]['name'];
-  //
-  //     var newChoice = Expanded(
-  //       child: Padding(
-  //         padding: EdgeInsets.all(15.0),
-  //         child: FlatButton(
-  //           color: teste,
-  //           child: Text(
-  //             eachChoice,
-  //             style: TextStyle(
-  //               fontSize: 20.0,
-  //               color: Colors.white,
-  //             ),
-  //           ),
-  //           onPressed: () {
-  //             setState(() {
-  //               if (choices.indexOf(choices[i]) ==
-  //                   choicesText.indexOf(eachChoice)) {
-  //                 teste = Colors.yellow;
-  //               } else {
-  //                 teste = Colors.red;
-  //               }
-  //             });
-  //             //The user picked this button.
-  //             userChoice = eachChoice;
-  //           },
-  //         ),
-  //       ),
-  //     );
-  //     choices.add(newChoice);
-  //   }
-  //   return choices;
-  // }
-
   Expanded textField() {
     return Expanded(
       flex: 2,
@@ -216,11 +207,13 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
           style: kTextCorEscuro,
           decoration: InputDecoration(
               labelText: 'Sua resposta aqui...',
+              errorText:
+                  _validate ? 'Digite a sua resposta antes de avançar.' : null,
               labelStyle: TextStyle(
                 color: kButtonCor2,
               ),
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
               border: OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: kButtonCor1, width: 1.0),
@@ -275,20 +268,32 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
             preferredSize: Size.fromHeight(4.0)),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: FlatButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 50.0,
-            color: kButtonCor2,
-          ),
-        ),
+        // leading: FlatButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   child: Icon(
+        //     Icons.arrow_back_ios,
+        //     size: 50.0,
+        //     color: kButtonCor2,
+        //   ),
+        // ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Visibility(
+            visible: _validate,
+            child: Center(
+              child: Container(
+                margin: EdgeInsetsDirectional.only(top: 5.0),
+                child: Text(
+                  'Pergunta sem resposta!',
+                  style: kWarningmsg,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             flex: 5,
             child: Padding(
@@ -324,18 +329,21 @@ class _QuestionarioQuizState extends State<QuestionarioQuiz> {
           ButtonBaixo(
             buttonTitle: buttonText,
             onTap: () {
-              userInputAnswer = myController.text;
-              if (userChoice == null) {
-                individualQuiz.add('$questionText $userInputAnswer');
-                print(userInputAnswer);
-              } else {
-                individualQuiz.add('$questionText $userChoice');
-                print(userChoice);
-              }
-              myController.clear();
-              _selectedIndex = -1;
+              // userInputAnswer = myController.text;
+              // if (userChoice == null) {
+              //   individualQuiz.add('$questionText $userInputAnswer');
+              //   print(userInputAnswer);
+              // } else {
+              //   individualQuiz.add('$questionText $userChoice');
+              //   print(userChoice);
+              // }
+              // myController.clear();
+              // userChoice = null;
+              // _selectedIndex = -1;
+              // FocusScope.of(context).unfocus();
+              checkingEachQuestion();
               print(questionText);
-              checkEndOdQuiz();
+              //checkEndOdQuiz();
             },
           )
         ],

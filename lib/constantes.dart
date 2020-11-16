@@ -29,3 +29,9 @@ const kTextOptions = TextStyle(
   color: Colors.black,
   fontSize: 18.0,
 );
+
+const kWarningmsg = TextStyle(
+  color: Colors.deepOrange,
+  fontSize: 18.0,
+  decoration: TextDecoration.underline,
+);

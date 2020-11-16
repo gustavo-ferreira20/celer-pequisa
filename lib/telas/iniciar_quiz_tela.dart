@@ -32,6 +32,10 @@ class _IniciarQuizState extends State<IniciarQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Informações',
+          style: kTextCorEscuro,
+        ),
         bottom: PreferredSize(
             child: Container(
               color: kButtonCor1,
@@ -40,16 +44,16 @@ class _IniciarQuizState extends State<IniciarQuiz> {
             preferredSize: Size.fromHeight(4.0)),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: FlatButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            size: 50.0,
-            color: kButtonCor2,
-          ),
-        ),
+        // leading: FlatButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   child: Icon(
+        //     Icons.arrow_back_ios,
+        //     size: 50.0,
+        //     color: kButtonCor2,
+        //   ),
+        // ),
       ),
       backgroundColor: Colors.white,
       body: Column(

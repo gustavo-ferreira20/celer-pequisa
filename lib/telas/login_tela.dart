@@ -1,5 +1,6 @@
 import 'package:celer_pesquisa_app/constantes.dart';
 import 'package:celer_pesquisa_app/services/login_api.dart';
+import 'package:celer_pesquisa_app/telas/bemvindo_tela.dart';
 import 'package:celer_pesquisa_app/telas/recuperar_senha_tela.dart';
 import 'package:celer_pesquisa_app/telas/iniciar_quiz_tela.dart';
 import 'package:celer_pesquisa_app/utilidades/alert.dart';
@@ -65,7 +66,10 @@ class _LoginTelaState extends State<LoginTela> {
 
   String _validaSenha(String texto) {
     if (texto.isEmpty) {
-      return "Digite o senha";
+      return "Digite a senha";
+    }
+    if (texto.length < 6) {
+      return 'Senha muito curta, insira pelo menos 6 caracteres!';
     }
     return null;
   }
@@ -103,7 +107,8 @@ class _LoginTelaState extends State<LoginTela> {
         elevation: 0,
         leading: FlatButton(
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.popAndPushNamed(context, BemVindoTela.id);
           },
           child: Icon(
             Icons.arrow_back_ios,
